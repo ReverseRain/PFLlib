@@ -65,6 +65,8 @@ from flcore.servers.servercac import FedCAC
 from flcore.servers.serverda import PFL_DA
 from flcore.servers.serverlc import FedLC
 
+from flcore.servers.serverlr import FedLR
+
 from flcore.trainmodel.models import *
 
 from flcore.trainmodel.bilstm import *
@@ -95,7 +97,7 @@ def run(args):
         start = time.time()
 
         # Generate args.model
-        if model_str == "MLR": # convex
+        if model_str == "mlr": # convex
             if "MNIST" in args.dataset:
                 args.model = Mclr_Logistic(1*28*28, num_classes=args.num_classes).to(args.device)
             elif "Cifar10" in args.dataset:
@@ -103,7 +105,7 @@ def run(args):
             else:
                 args.model = Mclr_Logistic(60, num_classes=args.num_classes).to(args.device)
 
-        elif model_str == "CNN": # non-convex
+        elif model_str == "cnn": # non-convex
             if "MNIST" in args.dataset:
                 args.model = FedAvgCNN(in_features=1, num_classes=args.num_classes, dim=1024).to(args.device)
             elif "Cifar10" in args.dataset:
@@ -116,7 +118,7 @@ def run(args):
             else:
                 args.model = FedAvgCNN(in_features=3, num_classes=args.num_classes, dim=10816).to(args.device)
 
-        elif model_str == "DNN": # non-convex
+        elif model_str == "dnn": # non-convex
             if "MNIST" in args.dataset:
                 args.model = DNN(1*28*28, 100, num_classes=args.num_classes).to(args.device)
             elif "Cifar10" in args.dataset:
@@ -124,7 +126,7 @@ def run(args):
             else:
                 args.model = DNN(60, 20, num_classes=args.num_classes).to(args.device)
         
-        elif model_str == "ResNet18":
+        elif model_str == "resnet":
             args.model = torchvision.models.resnet18(pretrained=False, num_classes=args.num_classes).to(args.device)
             
             # args.model = torchvision.models.resnet18(pretrained=True).to(args.device)
@@ -133,20 +135,20 @@ def run(args):
             
             # args.model = resnet18(num_classes=args.num_classes, has_bn=True, bn_block_num=4).to(args.device)
         
-        elif model_str == "ResNet10":
+        elif model_str == "resnet10":
             args.model = resnet10(num_classes=args.num_classes).to(args.device)
         
-        elif model_str == "ResNet34":
+        elif model_str == "resnet34":
             args.model = torchvision.models.resnet34(pretrained=False, num_classes=args.num_classes).to(args.device)
 
-        elif model_str == "AlexNet":
+        elif model_str == "alexnet":
             args.model = alexnet(pretrained=False, num_classes=args.num_classes).to(args.device)
             
             # args.model = alexnet(pretrained=True).to(args.device)
             # feature_dim = list(args.model.fc.parameters())[0].shape[1]
             # args.model.fc = nn.Linear(feature_dim, args.num_classes).to(args.device)
             
-        elif model_str == "GoogleNet":
+        elif model_str == "googlenet":
             args.model = torchvision.models.googlenet(pretrained=False, aux_logits=False, 
                                                       num_classes=args.num_classes).to(args.device)
             
@@ -154,17 +156,17 @@ def run(args):
             # feature_dim = list(args.model.fc.parameters())[0].shape[1]
             # args.model.fc = nn.Linear(feature_dim, args.num_classes).to(args.device)
 
-        elif model_str == "MobileNet":
+        elif model_str == "mobilenet_v2":
             args.model = mobilenet_v2(pretrained=False, num_classes=args.num_classes).to(args.device)
             
             # args.model = mobilenet_v2(pretrained=True).to(args.device)
             # feature_dim = list(args.model.fc.parameters())[0].shape[1]
             # args.model.fc = nn.Linear(feature_dim, args.num_classes).to(args.device)
             
-        elif model_str == "LSTM":
+        elif model_str == "lstm":
             args.model = LSTMNet(hidden_dim=args.feature_dim, vocab_size=args.vocab_size, num_classes=args.num_classes).to(args.device)
 
-        elif model_str == "BiLSTM":
+        elif model_str == "bilstm":
             args.model = BiLSTM_TextClassification(input_size=args.vocab_size, hidden_size=args.feature_dim, 
                                                    output_size=args.num_classes, num_layers=1, 
                                                    embedding_dropout=0, lstm_dropout=0, attention_dropout=0, 
@@ -184,7 +186,7 @@ def run(args):
         elif model_str == "AmazonMLP":
             args.model = AmazonMLP().to(args.device)
 
-        elif model_str == "HARCNN":
+        elif model_str == "harcnn":
             if args.dataset == 'HAR':
                 args.model = HARCNN(9, dim_hidden=1664, num_classes=args.num_classes, conv_kernel_size=(1, 9), 
                                     pool_kernel_size=(1, 2)).to(args.device)
@@ -369,6 +371,14 @@ def run(args):
             args.model.fc = nn.Identity()
             args.model = BaseHeadSplit(args.model, args.head)
             server = FedLC(args, i)
+        elif args.algorithm == 'FedLR':
+            args.fc = copy.deepcopy(args.model.fc)
+            args.fc1 = copy.deepcopy(args.model.fc1)
+            args.model.fc = nn.Identity()
+            args.model.fc1 = nn.Identity()
+            args.head=LinearHead(args.fc1 ,args.fc)
+            args.model = BaseHeadSplit(args.model, args.head)
+            server = FedLR(args, i)
             
         else:
             raise NotImplementedError
@@ -400,7 +410,7 @@ if __name__ == "__main__":
     parser.add_argument('-did', "--device_id", type=str, default="0")
     parser.add_argument('-data', "--dataset", type=str, default="MNIST")
     parser.add_argument('-nb', "--num_classes", type=int, default=10)
-    parser.add_argument('-m', "--model", type=str, default="CNN")
+    parser.add_argument('-m', "--model", type=str, default="cnn")
     parser.add_argument('-lbs', "--batch_size", type=int, default=10)
     parser.add_argument('-lr', "--local_learning_rate", type=float, default=0.005,
                         help="Local learning rate")

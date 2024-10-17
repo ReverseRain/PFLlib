@@ -5,7 +5,7 @@ channels:
   - conda-forge
   - defaults
 dependencies:
-  - pip=22
+  - pip=24
   - pandas
   - scikit-learn
   - scipy
@@ -15,7 +15,7 @@ dependencies:
   - matplotlib
   - click
   - pip:  # manually install with mirror URLs if a timeout occurs
-    - torch==2.0.1
+    - torch==2.2.1
     - torchaudio
     - torchtext
     - torchvision
@@ -27,3 +27,35 @@ dependencies:
     - diffusers
     - accelerate
     - transformers
+
+# # #########
+
+# name: pfllib
+# channels:
+#   - pytorch
+#   - nvidia
+#   - conda-forge
+#   - defaults
+# dependencies:
+#   - pip=22
+#   - pandas
+#   - scikit-learn
+#   - scipy
+#   - ujson
+#   - h5py
+#   - seaborn
+#   - matplotlib
+#   - click
+#   - pip:  # manually install with mirror URLs if a timeout occurs
+#     - torch==2.0.1
+#     - torchaudio
+#     - torchtext
+#     - torchvision
+#     - calmsize
+#     - memory-profiler
+#     - portalocker
+#     - cvxpy
+#     - higher
+#     - diffusers
+#     - accelerate
+#     - transformers

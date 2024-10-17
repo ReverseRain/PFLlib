@@ -35,6 +35,18 @@ class BaseHeadSplit(nn.Module):
         out = self.head(out)
 
         return out
+    
+class LinearHead(nn.Module):
+    def __init__(self, fc1, fc):
+        super(LinearHead, self).__init__()
+        self.fc1 = fc1
+        self.fc = fc
+        
+    def forward(self, x):
+        out = self.fc1(x)
+        out = self.fc(out)
+
+        return out
 
 ###########################################################
 
@@ -190,6 +202,7 @@ class FedAvgCNN(nn.Module):
         self.fc = nn.Linear(512, num_classes)
 
     def forward(self, x):
+        
         out = self.conv1(x)
         out = self.conv2(out)
         out = torch.flatten(out, 1)
