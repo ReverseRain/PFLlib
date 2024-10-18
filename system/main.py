@@ -66,6 +66,7 @@ from flcore.servers.serverda import PFL_DA
 from flcore.servers.serverlc import FedLC
 
 from flcore.servers.serverlr import FedLR
+from flcore.servers.serverft import FedFT
 
 from flcore.trainmodel.models import *
 
@@ -379,6 +380,14 @@ def run(args):
             args.head=LinearHead(args.fc1 ,args.fc)
             args.model = BaseHeadSplit(args.model, args.head)
             server = FedLR(args, i)
+        elif args.algorithm == 'FedFT':
+            args.fc = copy.deepcopy(args.model.fc)
+            args.fc1 = copy.deepcopy(args.model.fc1)
+            args.model.fc = nn.Identity()
+            args.model.fc1 = nn.Identity()
+            args.head=LinearHead(args.fc1 ,args.fc)
+            args.model = BaseHeadSplit(args.model, args.head)
+            server = FedFT(args, i)
             
         else:
             raise NotImplementedError
