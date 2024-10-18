@@ -18,7 +18,7 @@ class FourierParametrization(nn.Module):
         self.E=torch.stack([self.E//self.features_in,self.E%self.features_out],dim=0)
 
         #spectralcoefficientinitialization
-        self.c= nn.Parameter(torch.randn(n),requires_grad=True)
+        self.c= nn.Parameter(torch.randn(n).to(device),requires_grad=True)
 
         self.scale = alpha / n  # 缩放因子  
   

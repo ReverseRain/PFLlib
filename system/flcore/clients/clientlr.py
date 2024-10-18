@@ -72,32 +72,7 @@ class clientLR(Client):
                 self.optimizer.step()
         
         
-        # in this step fine tuning local head
-        # with torch.no_grad():
-        #     self.model.head.fc.original_weight=self.global_head.fc.weight.copy_
-        #     self.model.head.fc.original_bias=self.global_head.fc.bias.copy_
-        #     self.model.head.fc1.original_weight=self.global_head.fc1.weight.copy_
-        #     self.model.head.fc1.original_bias=self.global_head.fc1.bias.copy_
-        # for param in self.model.base.parameters():
-        #     param.requires_grad = False
         
-        # for epoch in range(max_local_epochs):
-        #     for i, (x, y) in enumerate(trainloader):
-        #         if type(x) == type([]):
-        #             x[0] = x[0].to(self.device)
-        #         else:
-        #             x = x.to(self.device)
-        #         y = y.to(self.device)
-        #         if self.train_slow:
-        #             time.sleep(0.1 * np.abs(np.random.rand()))
-        #         output = self.model(x)
-        #         loss = self.loss(output, y)
-        #         self.optimizer.zero_grad()
-        #         loss.backward()
-        #         self.optimizer.step()
-
-        # self.model.cpu()
-
 
         if self.learning_rate_decay:
             self.learning_rate_scheduler.step()
