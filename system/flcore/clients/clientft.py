@@ -11,23 +11,27 @@ class FourierParametrization(nn.Module):
     def __init__(self, features_in, features_out, n=3, alpha=1, device='cpu'):  
         super().__init__()  
         
+        self.device=device
         self.features_in=features_in
         self.features_out=features_out
         #entry initialization
         self.E=torch.randperm(features_in*features_out)[:n]
-        self.E=torch.stack([self.E//self.features_in,self.E%self.features_out],dim=0)
+        self.E=torch.stack([self.E//self.features_in,self.E%self.features_out],dim=0).to(device)
 
-        #spectralcoefficientinitialization
-        self.c= nn.Parameter(torch.randn(n).to(device),requires_grad=True)
+        #spectral coefficient initialization
+        # 这里的c就不放到cuda上面了,因为之后还要根据这个生成稀疏矩阵等，都会消耗cuda的内存
+        self.c= nn.Parameter(torch.randn(n).to(self.device),requires_grad=True)
 
         self.scale = alpha / n  # 缩放因子  
   
     def forward(self, original_weights): 
         # 获得变量代表的稀疏矩阵
-        F=torch.zeros(self.features_out,self.features_in)
+        F=torch.zeros(self.features_out,self.features_in).to(self.device)
         F[self.E[0,:],self.E[1,:]]=self.c
         # 通过对稀疏矩阵进行逆傅里叶变化 获得W
-        w=torch.fft.ifft2(F).real*self.scale
+        w=(torch.fft.ifft2(F).real*self.scale).to(self.device)
+        
+        # 不能只有w.to(self.device)还要就地赋值改变。
         return original_weights + w
 
 class clientFT(Client):
