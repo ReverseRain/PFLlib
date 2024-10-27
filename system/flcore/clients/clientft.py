@@ -40,18 +40,12 @@ class clientFT(Client):
 
         self.lamda = args.lamda
 
-        features_in_fc=self.model.head.fc.in_features
-        features_out_fc=self.model.head.fc.out_features
+        features_in=self.model.head.in_features
+        features_out=self.model.head.out_features
         
         
         parametrize.register_parametrization(  
-            self.model.head.fc, "weight", FourierParametrization(features_in_fc, features_out_fc,features_in_fc//3,1,self.device) )
-        
-        features_in_fc1=self.model.head.fc1[0].in_features
-        features_out_fc1=self.model.head.fc1[0].out_features
-        
-        parametrize.register_parametrization(  
-            self.model.head.fc1[0], "weight", FourierParametrization(features_in_fc1, features_out_fc1,features_in_fc1//3,2,self.device) )
+            self.model.head, "weight", FourierParametrization(features_in, features_out,5,1,self.device) )
     
     def train(self):
         trainloader = self.load_train_data()
@@ -96,7 +90,5 @@ class clientFT(Client):
     def set_parameters(self, global_head):
         self.model.head.fc.weight.data=global_head.fc.weight.data.clone()
         self.model.head.fc.bias.data=global_head.fc.bias.data.clone()
-        self.model.head.fc1[0].weight.data=global_head.fc1[0].weight.data.clone()
-        self.model.head.fc1[0].bias.data=global_head.fc1[0].bias.data.clone()
         
         

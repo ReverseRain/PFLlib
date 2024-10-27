@@ -76,6 +76,8 @@ def generate_dataset(dir_path):
     print(f'Number of labels: {label}')
 
     train_data, test_data = split_data(X, y)
+    print(train_data.shape)
+    print(test_data.shape)
     save_file(config_path, train_path, test_path, train_data, test_data, 20, label, 
         None, None, None, None)
 

@@ -106,7 +106,7 @@ def run(args):
             else:
                 args.model = Mclr_Logistic(60, num_classes=args.num_classes).to(args.device)
 
-        elif model_str == "cnn": # non-convex
+        elif model_str == "cnn": # ]
             if "MNIST" in args.dataset:
                 args.model = FedAvgCNN(in_features=1, num_classes=args.num_classes, dim=1024).to(args.device)
             elif "Cifar10" in args.dataset:
@@ -374,19 +374,14 @@ def run(args):
             server = FedLC(args, i)
         elif args.algorithm == 'FedLR':
             args.fc = copy.deepcopy(args.model.fc)
-            args.fc1 = copy.deepcopy(args.model.fc1)
             args.model.fc = nn.Identity()
-            args.model.fc1 = nn.Identity()
-            args.head=LinearHead(args.fc1 ,args.fc)
-            args.model = BaseHeadSplit(args.model, args.head)
+            args.model = BaseHeadSplit(args.model, args.fc)
             server = FedLR(args, i)
+
+    
         elif args.algorithm == 'FedFT':
             args.fc = copy.deepcopy(args.model.fc)
-            args.fc1 = copy.deepcopy(args.model.fc1)
             args.model.fc = nn.Identity()
-            args.model.fc1 = nn.Identity()
-            args.head=LinearHead(args.fc1 ,args.fc)
-            args.model = BaseHeadSplit(args.model, args.head)
             server = FedFT(args, i)
             
         else:

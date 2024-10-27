@@ -12,14 +12,15 @@ class LoRAParametrization(nn.Module):
         super().__init__()  
         # 论文第4.1节：  
         # 我们使用随机高斯初始化A，并将B初始化为零，所以ΔW = BA在训练开始时为零  
-        self.lora_A = nn.Parameter(torch.zeros((rank, features_out)).to(device))  # 初始化为零的低秩矩阵A  
-        self.lora_B = nn.Parameter(torch.zeros((features_in, rank)).to(device))  # 初始化为零的低秩矩阵B  
+        self.lora_A = nn.Parameter(torch.zeros((rank, features_in)).to(device))  # 初始化为零的低秩矩阵A  
+        self.lora_B = nn.Parameter(torch.zeros((features_out, rank)).to(device))  # 初始化为零的低秩矩阵B  
         nn.init.normal_(self.lora_A, mean=0, std=1)  # 对A进行标准正态分布初始化  
   
         self.scale = alpha / rank  # 缩放因子  
   
     def forward(self, original_weights): 
-        return original_weights + torch.matmul(self.lora_B, self.lora_A).view(original_weights.shape) * self.scale  
+        
+        return original_weights + torch.matmul(self.lora_B, self.lora_A) * self.scale  
 
 class clientLR(Client):
     def __init__(self, args, id, train_samples, test_samples, **kwargs):
@@ -27,19 +28,14 @@ class clientLR(Client):
 
         self.lamda = args.lamda
 
-        features_in_fc=self.model.head.fc.in_features
-        features_out_fc=self.model.head.fc.out_features
+        features_in=self.model.head.in_features
+        features_out=self.model.head.out_features
         
         # self.model.head.weight.requires_grad=False
         # self.model.head.bias.requires_grad=False
         parametrize.register_parametrization(  
-            self.model.head.fc, "weight", LoRAParametrization(features_in_fc, features_out_fc,5,1,self.device) )
+            self.model.head, "weight", LoRAParametrization(features_in, features_out,3,1,self.device) )
         
-        features_in_fc1=self.model.head.fc1[0].in_features
-        features_out_fc1=self.model.head.fc1[0].out_features
-        
-        parametrize.register_parametrization(  
-            self.model.head.fc1[0], "weight", LoRAParametrization(features_in_fc1, features_out_fc1,5,1,self.device) )
     
     def train(self):
         trainloader = self.load_train_data()
@@ -83,9 +79,6 @@ class clientLR(Client):
 
 
     def set_parameters(self, global_head):
-        self.model.head.fc.weight.data=global_head.fc.weight.data.clone()
-        self.model.head.fc.bias.data=global_head.fc.bias.data.clone()
-        self.model.head.fc1[0].weight.data=global_head.fc1[0].weight.data.clone()
-        self.model.head.fc1[0].bias.data=global_head.fc1[0].bias.data.clone()
-        
-        
+        self.model.head.weight.data=global_head.weight.data.clone()
+        self.model.head.bias.data=global_head.bias.data.clone()
+

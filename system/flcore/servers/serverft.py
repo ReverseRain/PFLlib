@@ -96,8 +96,6 @@ class FedFT(Server):
 
         self.global_model.fc.weight.data+= client_model.fc.weight.data.clone()* w
         self.global_model.fc.bias.data+= client_model.fc.bias.data.clone()* w
-        self.global_model.fc1[0].weight.data+= client_model.fc1[0].weight.data.clone()* w
-        self.global_model.fc1[0].bias.data+= client_model.fc1[0].bias.data.clone()* w
         
 
 
