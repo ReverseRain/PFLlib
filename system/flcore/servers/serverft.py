@@ -94,8 +94,8 @@ class FedFT(Server):
 
     def add_parameters(self, w, client_model):
 
-        self.global_model.fc.weight.data+= client_model.fc.weight.data.clone()* w
-        self.global_model.fc.bias.data+= client_model.fc.bias.data.clone()* w
+        self.global_model.weight.data+= client_model.weight.data.clone()* w
+        self.global_model.bias.data+= client_model.bias.data.clone()* w
         
 
 

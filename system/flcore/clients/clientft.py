@@ -88,7 +88,7 @@ class clientFT(Client):
 
 
     def set_parameters(self, global_head):
-        self.model.head.fc.weight.data=global_head.fc.weight.data.clone()
-        self.model.head.fc.bias.data=global_head.fc.bias.data.clone()
+        self.model.head.weight.data=global_head.weight.data.clone()
+        self.model.head.bias.data=global_head.bias.data.clone()
         
         

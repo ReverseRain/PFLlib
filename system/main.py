@@ -382,6 +382,7 @@ def run(args):
         elif args.algorithm == 'FedFT':
             args.fc = copy.deepcopy(args.model.fc)
             args.model.fc = nn.Identity()
+            args.model = BaseHeadSplit(args.model, args.fc)
             server = FedFT(args, i)
             
         else:
