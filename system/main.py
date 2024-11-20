@@ -67,6 +67,7 @@ from flcore.servers.serverlc import FedLC
 
 from flcore.servers.serverlr import FedLR
 from flcore.servers.serverft import FedFT
+from flcore.servers.serverLoRA import FedLoRA
 
 from flcore.trainmodel.models import *
 
@@ -384,6 +385,12 @@ def run(args):
             args.model.fc = nn.Identity()
             args.model = BaseHeadSplit(args.model, args.fc)
             server = FedFT(args, i)
+
+        elif args.algorithm == 'FedLoRA':
+            args.fc = copy.deepcopy(args.model.fc)
+            args.model.fc = nn.Identity()
+            args.model = BaseHeadSplit(args.model, args.fc)
+            server = FedLoRA(args, i)
             
         else:
             raise NotImplementedError

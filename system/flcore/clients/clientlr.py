@@ -19,7 +19,6 @@ class LoRAParametrization(nn.Module):
         self.scale = alpha / rank  # 缩放因子  
   
     def forward(self, original_weights): 
-        
         return original_weights + torch.matmul(self.lora_B, self.lora_A) * self.scale  
 
 class clientLR(Client):
