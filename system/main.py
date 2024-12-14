@@ -68,6 +68,7 @@ from flcore.servers.serverlc import FedLC
 from flcore.servers.serverlr import FedLR
 from flcore.servers.serverft import FedFT
 from flcore.servers.serverLoRA import FedLoRA
+from flcore.servers.serverLoRA2 import FedLoRA2
 
 from flcore.trainmodel.models import *
 
@@ -391,6 +392,12 @@ def run(args):
             args.model.fc = nn.Identity()
             args.model = BaseHeadSplit(args.model, args.fc)
             server = FedLoRA(args, i)
+
+        elif args.algorithm == 'FedLoRA2':
+            args.fc = copy.deepcopy(args.model.fc)
+            args.model.fc = nn.Identity()
+            args.model = BaseHeadSplit(args.model, args.fc)
+            server = FedLoRA2(args, i)
             
         else:
             raise NotImplementedError
@@ -525,7 +532,6 @@ if __name__ == "__main__":
     if args.device == "cuda" and not torch.cuda.is_available():
         print("\ncuda is not avaiable.\n")
         args.device = "cpu"
-
     print("=" * 50)
     for arg in vars(args):
         print(arg, '=',getattr(args, arg))
