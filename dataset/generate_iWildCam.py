@@ -18,15 +18,17 @@
 import numpy as np
 import os
 import random
-import torchvision
+import torchvision.transforms as transforms
 from utils.dataset_utils import split_data, save_file
-from PIL import Image
+from wilds import get_dataset
 
 
 random.seed(1)
 np.random.seed(1)
-num_clients = 20
-dir_path = "Omniglot/"
+img_size = 64
+least_samples = 100
+least_class_per_client = 2
+dir_path = "iWildCam/"
 
 
 # Allocate data to users
@@ -44,39 +46,50 @@ def generate_dataset(dir_path):
     if not os.path.exists(test_path):
         os.makedirs(test_path)
 
-    root = dir_path+"rawdata"
-    
-    # Get Omniglot data
-    torchvision.datasets.Omniglot(root=root, background=True, download=True)
-    torchvision.datasets.Omniglot(root=root, background=False, download=True)
+    # Get data
+    dataset = get_dataset(
+        dataset='iwildcam', 
+        root_dir=dir_path+'rawdata', 
+        download=True)
+    print('metadata columns:', dataset.metadata_fields)
 
-    X = [[] for _ in range(20)]
-    y = [[] for _ in range(20)]
+    transform = transforms.Compose(
+        [transforms.Resize((img_size, img_size)), transforms.ToTensor()])
 
-    dir = os.path.join(root, "omniglot-py/")
-    dirs = os.listdir(dir)
-    label = 0
-    for ddir in dirs:
-        if '.' not in ddir:
-            ddir = os.path.join(dir, ddir)
-            ddirs = os.listdir(ddir)
-            for dddir in ddirs:
-                if '.' not in dddir:
-                    dddir = os.path.join(ddir, dddir)
-                    dddirs = os.listdir(dddir)
-                    for ddddir in dddirs:
-                        ddddir = os.path.join(dddir, ddddir)
-                        file_names = os.listdir(ddddir)
-                        for i, fn in enumerate(file_names):
-                            fn = os.path.join(ddddir, fn)
-                            img = Image.open(fn)
-                            X[i].append(np.expand_dims(np.asarray(img), axis=0))
-                            y[i].append(label)
-                    label += 1
-                    
-    print(f'Number of labels: {label}')
-    
+    dataset_train = dataset.get_subset('train')
+    dataset_val = dataset.get_subset('val')
+    dataset_test = dataset.get_subset('test')
+
+    num_clients = 323
+    X_o = [[] for _ in range(num_clients)]
+    y_o = [[] for _ in range(num_clients)]
     statistic = []
+
+    def reassign_data(dataset):
+        for xx, yy, meta_data in dataset:
+            camera_trap_id = meta_data[0].item()
+            X_o[camera_trap_id].append(transform(xx).cpu().numpy())
+            y_o[camera_trap_id].append(yy.item())
+
+    reassign_data(dataset_train)
+    reassign_data(dataset_val)
+    reassign_data(dataset_test)
+
+    X = []
+    y = []
+
+    classes = set()
+    for i in range(num_clients):
+        if len(y_o[i]) > least_samples and len(set(y_o[i])) > least_class_per_client:
+            X.append(X_o[i])
+            y.append(y_o[i])
+            classes.update(y_o[i])
+
+    num_clients = len(y)
+    num_classes = len(classes)
+    print(f'Number of clients: {num_clients}')
+    print(f'Number of classes: {num_classes}')
+
     for i in range(num_clients):
         statistic.append([])
         y_arr = np.array(y[i])
@@ -89,14 +102,8 @@ def generate_dataset(dir_path):
         print("-" * 50)
 
     train_data, test_data = split_data(X, y)
-<<<<<<< HEAD
-    print(train_data.shape)
-    print(test_data.shape)
-    save_file(config_path, train_path, test_path, train_data, test_data, 20, label, 
-=======
-    save_file(config_path, train_path, test_path, train_data, test_data, num_clients, label, 
->>>>>>> ed5ccf2308b880aff4d383ed0ec5c533753075dd
-        None, None, None, None)
+    save_file(config_path, train_path, test_path, train_data, test_data, 
+        num_clients, num_classes, statistic, None, None, None)
 
 
 if __name__ == "__main__":

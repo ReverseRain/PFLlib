@@ -29,7 +29,7 @@ def psnr(original, contrast):
     if mse == 0:
         return 100
     PIXEL_MAX = 1.0
-    PSNR = 20 * math.log10(PIXEL_MAX / math.sqrt(mse))
+    PSNR = 20 * np.log10(PIXEL_MAX / np.sqrt(mse))
     return PSNR
 
 

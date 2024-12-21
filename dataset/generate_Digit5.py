@@ -223,6 +223,7 @@ def generate_dataset(dir_path):
     # Get Digit5 data
     if not os.path.exists(root):
         os.makedirs(root)
+        # If 404, use this new link: https://drive.google.com/file/d/1sO2PisChNPVT0CnOvIgGJkxdEosCwMUb/view
         os.system(f'wget https://drive.google.com/u/0/uc?id=1PT6K-_wmsUEUCxoYzDy0mxF-15tvb2Eu&export=download -P {root}')
         os.system(f'unzip {root}/Digit5.zip -d {root}')
 
@@ -260,6 +261,10 @@ def generate_dataset(dir_path):
         for i in np.unique(y[client]):
             statistic[client].append((int(i), int(sum(y[client]==i))))
 
+    for client in range(num_clients):
+        print(f"Client {client}\t Size of data: {len(X[client])}\t Labels: ", np.unique(y[client]))
+        print(f"\t\t Samples of labels: ", [i for i in statistic[client]])
+        print("-" * 50)
 
     train_data, test_data = split_data(X, y)
     save_file(config_path, train_path, test_path, train_data, test_data, num_clients, max(labelss), 
