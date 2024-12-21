@@ -1,7 +1,7 @@
 import copy
 import random
 import time
-from flcore.clients.clientLoRA import clientLoRA,LoRAadpater
+from flcore.clients.clientLoRA import clientLoRA, LoRAadpater
 from flcore.servers.serverbase import Server
 from threading import Thread
 
@@ -66,7 +66,7 @@ class FedLoRA(Server):
 
         if self.num_new_clients > 0:
             self.eval_new_clients = True
-            self.set_new_clients(clientLR)
+            self.set_new_clients(clientLoRA)
             print(f"\n-------------Fine tuning round-------------")
             print("\nEvaluate new clients")
             self.evaluate()

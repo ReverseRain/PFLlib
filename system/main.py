@@ -69,6 +69,7 @@ from flcore.servers.serverlr import FedLR
 from flcore.servers.serverft import FedFT
 from flcore.servers.serverLoRA import FedLoRA
 from flcore.servers.serverLoRA2 import FedLoRA2
+from flcore.servers.serverDBE_LST import FedDBE_LST
 
 from flcore.trainmodel.models import *
 
@@ -359,6 +360,12 @@ def run(args):
             args.model.fc = nn.Identity()
             args.model = BaseHeadSplit(args.model, args.head)
             server = FedDBE(args, i)
+            
+        elif args.algorithm == 'FedDBE_LST':
+            args.head = copy.deepcopy(args.model.fc)
+            args.model.fc = nn.Identity()
+            args.model = BaseHeadSplit(args.model, args.head)
+            server = FedDBE_LST(args, i)
 
         elif args.algorithm == 'FedCAC':
             server = FedCAC(args, i)
@@ -522,7 +529,7 @@ if __name__ == "__main__":
     parser.add_argument('-mlr', "--mentee_learning_rate", type=float, default=0.005)
     parser.add_argument('-Ts', "--T_start", type=float, default=0.95)
     parser.add_argument('-Te', "--T_end", type=float, default=0.98)
-    # FedDBE
+    # FedDBE / FedDEB_LST
     parser.add_argument('-mo', "--momentum", type=float, default=0.1)
     parser.add_argument('-klw', "--kl_weight", type=float, default=0.0)
 

@@ -124,7 +124,6 @@ class clientLoRA(Client):
 
 
     def set_parameters(self, global_adpater):
-
         for new_param, old_param in zip(global_adpater.parameters(), self.adpater.parameters()):
             old_param.data = new_param.data.clone()
         
