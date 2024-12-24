@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f22f8cf8-5281-49b4-affd-a0668e2d3ad7" name="Changes" comment="fix FT">
+      <change beforePath="$PROJECT_DIR$/env_cuda_latest.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/env_cuda_latest.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/system/flcore/clients/clientLoRA.py" beforeDir="false" afterPath="$PROJECT_DIR$/system/flcore/clients/clientLoRA.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/system/flcore/clients/clientlr.py" beforeDir="false" afterPath="$PROJECT_DIR$/system/flcore/clients/clientlr.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/system/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/system/main.py" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;ReverseRain&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/ReverseRain/PFLlib&quot;,
+    &quot;accountId&quot;: &quot;61803ba5-a769-4705-bbc6-2b5df4ee7aaf&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 7
+}</component>
+  <component name="ProjectId" id="2nXnw1evJuegqX6pGkWGFTqzknM" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-9f38398b9061-39b83d9b5494-intellij.indexing.shared.core-IU-241.18034.62" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-IU-241.18034.62" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f22f8cf8-5281-49b4-affd-a0668e2d3ad7" name="Changes" comment="" />
+      <created>1729128526031</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1729128526031</updated>
+      <workItem from="1729128527502" duration="145000" />
+      <workItem from="1729129625257" duration="143000" />
+      <workItem from="1729239702155" duration="247000" />
+      <workItem from="1729240247477" duration="342000" />
+      <workItem from="1729241001184" duration="1273000" />
+      <workItem from="1729428725533" duration="1253000" />
+      <workItem from="1730011041302" duration="772000" />
+      <workItem from="1730012586587" duration="46000" />
+      <workItem from="1731477930664" duration="38000" />
+      <workItem from="1732068626089" duration="306000" />
+      <workItem from="1732068947725" duration="581000" />
+      <workItem from="1732180808763" duration="126000" />
+      <workItem from="1734169649223" duration="25000" />
+    </task>
+    <task id="LOCAL-00001" summary="try clientLR">
+      <option name="closed" value="true" />
+      <created>1729129730544</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1729129730544</updated>
+    </task>
+    <task id="LOCAL-00002" summary="try clientFT">
+      <option name="closed" value="true" />
+      <created>1729239823490</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1729239823490</updated>
+    </task>
+    <task id="LOCAL-00003" summary="try clientFT">
+      <option name="closed" value="true" />
+      <created>1729240276375</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1729240276375</updated>
+    </task>
+    <task id="LOCAL-00004" summary="to device">
+      <option name="closed" value="true" />
+      <created>1729241046472</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1729241046472</updated>
+    </task>
+    <task id="LOCAL-00005" summary="all Parameter to device">
+      <option name="closed" value="true" />
+      <created>1729428766580</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1729428766580</updated>
+    </task>
+    <task id="LOCAL-00006" summary="PEFT only least linear layer">
+      <option name="closed" value="true" />
+      <created>1730011150119</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1730011150119</updated>
+    </task>
+    <task id="LOCAL-00007" summary="fix FT">
+      <option name="closed" value="true" />
+      <created>1730012608166</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1730012608166</updated>
+    </task>
+    <task id="LOCAL-00008" summary="fix FT">
+      <option name="closed" value="true" />
+      <created>1732068687989</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1732068687989</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="try clientLR" />
+    <MESSAGE value="try clientFT" />
+    <MESSAGE value="to device" />
+    <MESSAGE value="all Parameter to device" />
+    <MESSAGE value="PEFT only least linear layer" />
+    <MESSAGE value="fix FT" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix FT" />
+  </component>
+</project>
